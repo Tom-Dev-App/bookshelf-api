@@ -232,11 +232,30 @@ const update = (req, h) => {
   }).code(200);
 };
 
+const destroy = (req, h) => {
+  const bookId = req.params.bookId;
+
+  const bookIndex = books.findIndex((book) => book.id === bookId);
+
+  if (bookIndex === -1) {
+    return h.response({
+      status: 'fail',
+      message: 'Buku gagal dihapus. Id tidak ditemukan',
+    }).code(404);
+  }
+
+  books.splice(index, 1);
+
+  return h.response({
+    status: 'success',
+    message: 'Buku berhasil dihapus',
+  }).code(200);
+};
 
 module.exports = {
   store,
   index,
   show,
   update,
-  // destroy,
+  destroy,
 };

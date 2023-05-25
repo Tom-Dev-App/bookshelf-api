@@ -3,7 +3,7 @@ const {
   index,
   show,
   update,
-  // destroy,
+  destroy,
 } = require('./controller');
 
 const routes = [
@@ -27,11 +27,11 @@ const routes = [
     path: '/books/{bookId}',
     handler: update,
   },
-  // {
-  //   method: 'DELETE',
-  //   path: '/books/{bookId}',
-  //   handler: destroy,
-  // },
+  {
+    method: 'DELETE',
+    path: '/books/{bookId}',
+    handler: destroy,
+  },
 ];
 
 module.exports = {
