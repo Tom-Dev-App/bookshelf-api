@@ -2,7 +2,7 @@ const {
   store,
   index,
   show,
-  // update,
+  update,
   // destroy,
 } = require('./controller');
 
@@ -22,11 +22,11 @@ const routes = [
     path: '/books/{bookId}',
     handler: show,
   },
-  // {
-  //   method: 'PUT',
-  //   path: '/books/{bookId}',
-  //   handler: update,
-  // },
+  {
+    method: 'PUT',
+    path: '/books/{bookId}',
+    handler: update,
+  },
   // {
   //   method: 'DELETE',
   //   path: '/books/{bookId}',
