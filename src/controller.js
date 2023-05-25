@@ -106,10 +106,36 @@ const store = (req, h) => {
 
 
 const index = (req, h) => {
-  return h.response({
-    status: 'success',
-    data: books,
-  });
+//   return h.response({reading: req.query.reading});
+  if (req.query.reading === undefined || req.query.reading === null) {
+    return h.response({
+      status: 'success',
+      data: books,
+    }).code(200);
+  }
+
+  if (/[0-1]+/.test(req.query.reading)) {
+    const reading = req.query.reading == 1 ? true : false;
+    const data = books.filter((book) => book.reading == reading);
+    return h.response({
+      status: 'success',
+      data: data,
+    }).code(200);
+  }
+
+  if (/[A-Za-z]+/.test(req.query.reading)) {
+    return h.response({
+      status: 'fail',
+      message: 'Gagal menampilkan buku. Gunakan paramater 0 atau 1 untuk menampilkan buku belum atau sudah dibaca.',
+    }).code(400);
+  }
+
+  if (/^[2-9]$/.test(req.query.reading) || /^-\d+$/.test(req.query.reading) || req.query.reading === '' || /[!@#$%^&*()]/.test(req.query.reading)) {
+    return h.response({
+      status: 'fail',
+      message: 'Gagal menampilkan buku. Gunakan paramater 0 atau 1 untuk menampilkan buku belum atau sudah dibaca.',
+    }).code(400);
+  }
 };
 
 const show = (req, h) => {
