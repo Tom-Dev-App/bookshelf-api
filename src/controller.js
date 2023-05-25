@@ -1,5 +1,5 @@
 const {nanoid} = require('nanoid');
-const books = [];
+const booksArray = [];
 const store = (req, h) => {
   if (req.payload === null) {
     return h.response({status: 'fail', message: 'Gagal menambahkan buku. Mohon isi form terlebih dahulu!'}).code(400);
@@ -82,9 +82,9 @@ const store = (req, h) => {
     year: year, author: author, summary: summary, publisher: publisher, pageCount: pageCount, readPage: readPage, finished: finished, reading: reading, insertedAt: insertedAt, updatedAt: updatedAt,
   };
 
-  books.push(newBook);
+  booksArray.push(newBook);
 
-  const isSuccess = books.filter((book) => book.id === id).length > 0;
+  const isSuccess = booksArray.filter((book) => book.id === id).length > 0;
 
   if (isSuccess) {
     const response = h.response({
@@ -110,16 +110,16 @@ const index = (req, h) => {
   if (req.query.reading === undefined || req.query.reading === null) {
     return h.response({
       status: 'success',
-      data: books,
+      data: {books: booksArray.map((book) => ({id: book.id, name: book.name, publisher: book.publisher}))},
     }).code(200);
   }
 
   if (/[0-1]+/.test(req.query.reading)) {
     const reading = req.query.reading == 1 ? true : false;
-    const data = books.filter((book) => book.reading == reading);
+    const data = booksArray.filter((book) => book.reading == reading);
     return h.response({
       status: 'success',
-      data: data,
+      data: {books: data.map((book) => ({id: book.id, name: book.name, publisher: book.publisher}))},
     }).code(200);
   }
 
@@ -140,7 +140,7 @@ const index = (req, h) => {
 
 const show = (req, h) => {
   const bookId = req.params.bookId;
-  const book = books.filter((book) => book.id === bookId)[0];
+  const book = booksArray.filter((book) => book.id === bookId)[0];
 
   if (book !== undefined) {
     return h.response({
@@ -172,7 +172,7 @@ const update = (req, h) => {
     reading,
   } = req.payload;
 
-  const bookIndex = books.findIndex((book) => book.id === String(bookId));
+  const bookIndex = booksArray.findIndex((book) => book.id === String(bookId));
 
   if (bookIndex === -1) {
     return h.response({
@@ -238,8 +238,8 @@ const update = (req, h) => {
   const finished = pageCount === readPage ? true : false;
   const updatedAt = new Date().toISOString();
 
-  books[bookIndex] = {
-    ...books[bookIndex],
+  booksArray[bookIndex] = {
+    ...booksArray[bookIndex],
     name: name,
     year: year,
     author: author,
@@ -261,7 +261,7 @@ const update = (req, h) => {
 const destroy = (req, h) => {
   const bookId = req.params.bookId;
 
-  const bookIndex = books.findIndex((book) => book.id === bookId);
+  const bookIndex = booksArray.findIndex((book) => book.id === bookId);
 
   if (bookIndex === -1) {
     return h.response({
@@ -270,7 +270,7 @@ const destroy = (req, h) => {
     }).code(404);
   }
 
-  books.splice(index, 1);
+  booksArray.splice(index, 1);
 
   return h.response({
     status: 'success',
