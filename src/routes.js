@@ -1,7 +1,7 @@
 const {
   store,
   index,
-  // show,
+  show,
   // update,
   // destroy,
 } = require('./controller');
@@ -17,11 +17,11 @@ const routes = [
     path: '/books',
     handler: index,
   },
-  // {
-  //   method: 'GET',
-  //   path: '/books/{bookId}',
-  //   handler: show,
-  // },
+  {
+    method: 'GET',
+    path: '/books/{bookId}',
+    handler: show,
+  },
   // {
   //   method: 'PUT',
   //   path: '/books/{bookId}',

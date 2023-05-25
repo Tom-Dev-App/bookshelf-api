@@ -112,10 +112,26 @@ const index = (req, h) => {
   });
 };
 
+const show = (req, h) => {
+  const bookId = req.params.bookId;
+  const book = books.filter((book) => book.id === bookId)[0];
+
+  if (book !== undefined) {
+    return h.response({
+      status: 'success',
+      data: {book}}).code(200);
+  }
+
+  return h.response({
+    status: 'fail',
+    message: 'Buku tidak ditemukan',
+  });
+};
+
 module.exports = {
   store,
   index,
-  // show,
+  show,
   // update,
   // destroy,
 };
